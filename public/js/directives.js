@@ -82,3 +82,29 @@ directiveModule.directive('statusGlyph', function() {
     }
   };
 });
+
+directiveModule.directive('attribute', ["$compile", "$filter", function ($compile, $filter) {
+  //Figure out how to render content based on the content.
+  var selectTemplate = function(value){
+      var template = '';
+
+      if($filter("mightBeLink")(value)) {
+        // Would be better to move to external template if other renders are desired.
+        template = "<a target='_blank' href='" + value + "'>" + value + "</a>";
+      }
+      else {
+        template = value;
+      }
+
+      return template;
+  };
+
+  return {
+    restrict: 'EA',
+    transclude: true,
+    link: function(scope, element, attributes) {
+      element.html(selectTemplate(attributes.value));
+      $compile(element.contents())(scope);
+    }
+  };
+}]);

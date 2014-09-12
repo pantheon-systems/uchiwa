@@ -31,3 +31,15 @@ filterModule.filter('filterSubscriptions', function() {
     }
   };
 });
+
+filterModule.filter('mightBeLink', function() {
+  return function(value) {
+    // Naively see if this *might* be a link.
+    if(value) {
+      if(value.toString().indexOf("://") != -1) {
+        return true;
+      }
+    }
+    return false;
+  };
+});
